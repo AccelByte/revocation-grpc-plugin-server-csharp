@@ -1,5 +1,5 @@
-# FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:6.0.302 as builder
-FROM mcr.microsoft.com/dotnet/sdk:6.0.302 as builder
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:6.0.302 as builder
+# FROM mcr.microsoft.com/dotnet/sdk:6.0.302 as builder
 ARG PROJECT_PATH=src/AccelByte.PluginArch.Revocation.Demo.Server
 WORKDIR /build
 COPY $PROJECT_PATH/*.csproj ./
