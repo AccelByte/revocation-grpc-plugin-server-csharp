@@ -76,7 +76,7 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client.Model
             Password = ReplaceWithEnvironmentVariableIfExists(Password, "AB_PASSWORD");
 
             if (CategoryPath.Trim() == "")
-                CategoryPath = $"/testcat-{Helper.GenerateRandomId(8)}";
+                CategoryPath = $"/test{Helper.GenerateRandomId(8)}";
         }
     }
 }
