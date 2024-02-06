@@ -29,7 +29,10 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client.Model
 
             Quantity = source.Quantity!.Value;
             Reason = source.Reason!;
-            IsSkipped = source.Skipped!.Value;
+
+            if (source.Skipped != null)
+                IsSkipped = source.Skipped.Value;
+
             Status = source.Status!.Value;
             Strategy = source.Strategy!;
         }
