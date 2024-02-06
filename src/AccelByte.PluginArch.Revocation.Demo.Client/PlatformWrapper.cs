@@ -536,7 +536,7 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
             try
             {
                 var result = _Sdk.Platform.Entitlement.ConsumeUserEntitlementOp
-                    .SetBody(new EntitlementDecrement()
+                    .SetBody(new AdminEntitlementDecrement()
                     {
                         UseCount = useCount
                     })
