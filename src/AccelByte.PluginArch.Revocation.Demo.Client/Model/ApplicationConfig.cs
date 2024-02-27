@@ -74,6 +74,8 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client.Model
             Namespace = ReplaceWithEnvironmentVariableIfExists(Namespace, "AB_NAMESPACE");
             Username = ReplaceWithEnvironmentVariableIfExists(Username, "AB_USERNAME");
             Password = ReplaceWithEnvironmentVariableIfExists(Password, "AB_PASSWORD");
+            GrpcServerUrl = ReplaceWithEnvironmentVariableIfExists(GrpcServerUrl, "GRPC_SERVER_URL");
+            ExtendAppName = ReplaceWithEnvironmentVariableIfExists(ExtendAppName, "EXTEND_APP_NAME");
 
             if (CategoryPath.Trim() == "")
                 CategoryPath = $"/test{Helper.GenerateRandomId(8)}";

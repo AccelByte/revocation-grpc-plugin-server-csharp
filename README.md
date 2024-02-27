@@ -217,6 +217,8 @@ the `gRPC server` needs to be exposed to the internet. To do this without requir
    - ADMIN:NAMESPACE:{namespace}:CATEGORY [CREATE]
    - ADMIN:NAMESPACE:{namespace}:ITEM [CREATE, DELETE]
    - ADMIN:NAMESPACE:{namespace}:CURRENCY [CREATE, DELETE]
+   - ADMIN:NAMESPACE:{namespace}:USER:{userId}:WALLET [UPDATE]
+   - NAMESPACE:{namespace}:WALLET [READ]
 
    > :warning: **Oauth Client created in this step is different from the one from Prerequisites section:** It is required by CLI demo app [here](demo/cli/) in the next step to register the `gRPC Server` URL.
 

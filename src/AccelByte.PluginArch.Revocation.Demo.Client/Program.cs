@@ -56,6 +56,10 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
                             wrapper.CheckAndCreateCurrencyIfNotExists();
                             Console.WriteLine("[OK]");
 
+                            Console.Write("Check user's wallet...");
+                            wrapper.CheckUserWalletBalance(userInfo.UserId!);
+                            Console.WriteLine("[OK]");
+
                             Console.Write("Creating draft store... ");
                             wrapper.CreateStore();
                             Console.WriteLine("[OK]");

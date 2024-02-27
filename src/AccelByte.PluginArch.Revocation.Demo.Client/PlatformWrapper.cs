@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 AccelByte Inc. All Rights Reserved.
+﻿// Copyright (c) 2023-2024 AccelByte Inc. All Rights Reserved.
 // This is licensed software from AccelByte Inc, for limitations
 // and restrictions contact your company contract manager.
 
@@ -27,6 +27,9 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
 
         public const string AB_VIEW_NAME = "Revocation Default View";
 
+        public const string AB_CURRENCY_CODE = "USV";
+
+        public const string AB_CURRENCY_NAME = "Virtual US Dollars";
 
         private AccelByteSDK _Sdk;
 
@@ -247,9 +250,9 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
                                 { "US", new List<RegionDataItemDTO>()
                                     {
                                         { new RegionDataItemDTO() {
-                                            CurrencyCode = "USD",
+                                            CurrencyCode = AB_CURRENCY_CODE,
                                             CurrencyNamespace = _Sdk.Namespace,
-                                            CurrencyType = RegionDataItemDTOCurrencyType.REAL,
+                                            CurrencyType = RegionDataItemDTOCurrencyType.VIRTUAL,
                                             Price = nItemInfo.Price
                                         }}
                                     }
@@ -359,9 +362,9 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
                                 { "US", new List<RegionDataItemDTO>()
                                     {
                                         { new RegionDataItemDTO() {
-                                            CurrencyCode = "USD",
+                                            CurrencyCode = AB_CURRENCY_CODE,
                                             CurrencyNamespace = _Sdk.Namespace,
-                                            CurrencyType = RegionDataItemDTOCurrencyType.REAL,
+                                            CurrencyType = RegionDataItemDTOCurrencyType.VIRTUAL,
                                             Price = nItemInfo.Price
                                         }}
                                     }
@@ -598,7 +601,7 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
                 OrderInfo? order = _Sdk.Platform.Order.PublicCreateUserOrderOp
                     .SetBody(new OrderCreate()
                     {
-                        CurrencyCode = "USD",
+                        CurrencyCode = AB_CURRENCY_CODE,
                         ItemId = item.Id,
                         Price = quantity * item.Price,
                         Quantity = quantity,
@@ -679,28 +682,28 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
                 if (currencies == null)
                     throw new Exception("Could not retrieve list of currencies.");
 
-                bool isUSDFound = false;
+                bool isCurrencyFound = false;
                 foreach (var currencyItem in currencies)
                 {
-                    if (currencyItem.CurrencyCode == "USD")
+                    if (currencyItem.CurrencyCode == AB_CURRENCY_CODE)
                     {
-                        isUSDFound = true;
+                        isCurrencyFound = true;
                         break;
                     }
                 }
 
-                if (!isUSDFound)
+                if (!isCurrencyFound)
                 {
                     _Sdk.Platform.Currency.CreateCurrencyOp
                         .SetBody(new CurrencyCreate()
                         {
-                            CurrencyCode = "USD",
-                            CurrencySymbol = "US$",
-                            CurrencyType = CurrencyCreateCurrencyType.REAL,
-                            Decimals = 2,
+                            CurrencyCode = AB_CURRENCY_CODE,
+                            CurrencySymbol = AB_CURRENCY_CODE,
+                            CurrencyType = CurrencyCreateCurrencyType.VIRTUAL,
+                            Decimals = 0,
                             LocalizationDescriptions = new Dictionary<string, string>()
                             {
-                                { "en", "US Dollars" }
+                                { "en", AB_CURRENCY_NAME }
                             }
                         })
                         .Execute(_Sdk.Namespace);
@@ -709,6 +712,41 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
             catch (Exception x)
             {
                 Console.WriteLine("CheckAndCreateCurrencyIfNotExists failed. {0}", x.Message);
+                throw;
+            }
+        }
+
+        public void CheckUserWalletBalance(string userId)
+        {
+            try
+            {
+                var checkResult = _Sdk.Platform.Wallet.PublicGetWalletOp
+                    .Execute(AB_CURRENCY_CODE, _Sdk.Namespace, userId);
+                if (checkResult == null)
+                    throw new Exception("Could not retrieve wallet info.");
+
+                if (checkResult.Balance!.Value < 500)
+                {
+                    //not enough balance, so fill it.
+                    var addResult = _Sdk.Platform.Wallet.CreditUserWalletOp
+                        .SetBody(new CreditRequest()
+                        {
+                            Amount = 500,
+                            Origin = CreditRequestOrigin.Other,
+                            Source = CreditRequestSource.OTHER,
+                            Reason = "Grpc Plugin Test"
+                        })
+                        .Execute(AB_CURRENCY_CODE, _Sdk.Namespace, userId);
+                    if (addResult == null)
+                        throw new Exception("Could not credit user's wallet.");
+
+                    if (addResult.Balance!.Value < 500)
+                        throw new Exception("Failed to credit user's wallet.");
+                }
+            }
+            catch (Exception x)
+            {
+                Console.WriteLine("GetUserWalletBalance failed. {0}", x.Message);
                 throw;
             }
         }
