@@ -7,7 +7,7 @@ SHELL := /bin/bash
 BUILDER := grpc-plugin-server-builder
 IMAGE_NAME := $(shell basename "$$(pwd)")-app
 IMAGE_VERSION ?= latest
-DOTNETVER := 6.0.302
+DOTNETVER := 6.0
 APP_PATH := AccelByte.PluginArch.Revocation.Demo.Server
 
 .PHONY: build image imagex test
