@@ -82,7 +82,11 @@ custom revocation function for platform service in `AccelByte Gaming Services`.
 
    e. [Postman](https://www.postman.com/)
 
-      - Use binary available [here](https://www.postman.com/downloads/)
+      - Use binary available [here](https://www.postman.com/downloads/
+      
+   f. [ngrok](https://ngrok.com/)
+
+      - Follow installation instruction for Linux [here](https://ngrok.com/download)
 
 2. Access to `AccelByte Gaming Services` environment.
 
