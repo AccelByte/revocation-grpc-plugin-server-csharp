@@ -26,7 +26,6 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
 
                     Console.WriteLine($"\tBaseUrl: {config.BaseUrl}");
                     Console.WriteLine($"\tClientId: {config.ClientId}");
-                    Console.WriteLine($"\tUsername: {config.Username}");
                     Console.WriteLine($"\tStore Category: {config.CategoryPath}");
                     if (config.GrpcServerUrl != "")
                         Console.WriteLine($"\tGrpc Target: {config.GrpcServerUrl}");
@@ -39,13 +38,18 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
                         return;
                     }
 
+                    string userId = "";
                     try
                     {
                         Console.Write("Logging in to AccelByte... ");
-                        var userInfo = wrapper.Login();
+                        wrapper.Login();
                         Console.WriteLine("[OK]");
-                        Console.WriteLine($"User: {userInfo.UserName}");
-                        Console.WriteLine($"UserId: {userInfo.UserId}");
+
+                        Console.Write("Creating test user...");
+                        var userInfo = wrapper.CreateTestUser();
+                        userId = userInfo.UserId!;
+                        Console.WriteLine($"User: {userInfo.Username}");
+                        Console.WriteLine($"UserId: {userId}");
 
                         Console.Write("Configuring custom configuration... ");
                         wrapper.ConfigureGrpcTargetUrl();
@@ -57,7 +61,7 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
                             Console.WriteLine("[OK]");
 
                             Console.Write("Check user's wallet...");
-                            wrapper.CheckUserWalletBalance(userInfo.UserId!);
+                            wrapper.CheckUserWalletBalance(userId);
                             Console.WriteLine("[OK]");
 
                             Console.Write("Creating draft store... ");
@@ -80,12 +84,12 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
                             try
                             {
                                 Console.Write("Creating order for item...");
-                                string orderNo = wrapper.CreateOrder(userInfo.UserId!, items[0], 1);
+                                string orderNo = wrapper.CreateOrder(userId, items[0], 1);
                                 Console.WriteLine("[OK]");
                                 Console.WriteLine("OrderNo: {0}", orderNo);
 
                                 Console.Write("Revoking order...");
-                                var result = wrapper.RevokeOrder(userInfo.UserId!, orderNo, items[0]);
+                                var result = wrapper.RevokeOrder(userId, orderNo, items[0]);
                                 Console.WriteLine("[OK]");
                                 result.WriteToConsole();
                             }
@@ -124,6 +128,13 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
                     }
                     finally
                     {
+                        if (userId != "")
+                        {
+                            Console.Write("Deleting test user...");
+                            wrapper.DeleteUser(userId);
+                            Console.WriteLine("[OK]");
+                        }
+
                         wrapper.Logout();
                     }
                 })

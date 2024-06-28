@@ -16,7 +16,7 @@ using AccelByte.Sdk.Core.Util;
 
 namespace AccelByte.PluginArch.Revocation.Demo.Client.Model
 {
-    public class ApplicationConfig : IConfigRepository, ICredentialRepository
+    public class ApplicationConfig : IConfigRepository
     {
         [Option('b', "baseurl", Required = false, HelpText = "AGS base URL", Default = "")]
         public string BaseUrl { get; set; } = String.Empty;
@@ -27,7 +27,7 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client.Model
         [Option('s', "secret", Required = false, HelpText = "AGS client secret", Default = "")]
         public string ClientSecret { get; set; } = String.Empty;
 
-        public string AppName { get; set; } = "CustomLootBoxRollDemoClient";
+        public string AppName { get; set; } = "CustomRevocationDemoClient";
 
         public string TraceIdVersion { get; set; } = String.Empty;
 
@@ -39,12 +39,6 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client.Model
         public bool EnableUserAgentInfo { get; set; } = false;
 
         public IHttpLogger? Logger { get; set; } = null;
-
-        [Option('u', "username", Required = false, HelpText = "AGS Username", Default = "")]
-        public string Username { get; set; } = String.Empty;
-
-        [Option('p', "password", Required = false, HelpText = "AGS User's password", Default = "")]
-        public string Password { get; set; } = String.Empty;
 
         public string UserId { get; set; } = String.Empty;
 
@@ -72,8 +66,6 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client.Model
             ClientId = ReplaceWithEnvironmentVariableIfExists(ClientId, "AB_CLIENT_ID");
             ClientSecret = ReplaceWithEnvironmentVariableIfExists(ClientSecret, "AB_CLIENT_SECRET");
             Namespace = ReplaceWithEnvironmentVariableIfExists(Namespace, "AB_NAMESPACE");
-            Username = ReplaceWithEnvironmentVariableIfExists(Username, "AB_USERNAME");
-            Password = ReplaceWithEnvironmentVariableIfExists(Password, "AB_PASSWORD");
             GrpcServerUrl = ReplaceWithEnvironmentVariableIfExists(GrpcServerUrl, "GRPC_SERVER_URL");
             ExtendAppName = ReplaceWithEnvironmentVariableIfExists(ExtendAppName, "EXTEND_APP_NAME");
 

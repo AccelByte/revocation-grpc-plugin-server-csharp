@@ -299,22 +299,24 @@ can use something like [ngrok](https://ngrok.com/).
    
    - For AGS Private Cloud customers:
       - `ADMIN:NAMESPACE:{namespace}:PLUGIN:REVOCATION [UPDATE,DELETE]`
-      - `ADMIN:NAMESPACE:{namespace}:REVOCATION [UPDATE]`
+      - `ADMIN:NAMESPACE:{namespace}:USER:*:WALLET [READ,UPDATE]`
       - `ADMIN:NAMESPACE:{namespace}:USER:*:REVOCATION [UPDATE]`
-      - `ADMIN:NAMESPACE:{namespace}:STORE [CREATE,READ,UPDATE,DELETE]`
+      - `ADMIN:NAMESPACE:{namespace}:USER:*:ORDER [CREATE]`
+      - `ADMIN:NAMESPACE:{namespace}:STORE [READ,CREATE,UPDATE,DELETE]`
       - `ADMIN:NAMESPACE:{namespace}:CATEGORY [CREATE]`
-      - `ADMIN:NAMESPACE:{namespace}:CURRENCY [CREATE,READ,DELETE]`
-      - `ADMIN:NAMESPACE:{namespace}:ITEM [CREATE,READ,DELETE]`
-      - `ADMIN:NAMESPACE:{namespace}:USER:{userId}:WALLET [UPDATE]`
-      - `NAMESPACE:{namespace}:WALLET [READ]`
+      - `ADMIN:NAMESPACE:{namespace}:CURRENCY [READ,CREATE,DELETE]`
+      - `ADMIN:NAMESPACE:{namespace}:ITEM [READ,CREATE,DELETE]`
+      - `ADMIN:NAMESPACE:{namespace}:INFORMATION:USER:* [CREATE, DELETE]`
    - For AGS Shared Cloud customers:
-      - Platform Store -> Revocation (Update, Delete)
       - Platform Store -> Service Plugin Config (Read, Update, Delete)
-      - Platform Store -> Store (Create, Read, Update, Delete)
-      - Platform Store -> Category (Create)
-      - Platform Store -> Currency (Create, Read, Delete)
-      - Platform Store -> Item (Create, Read, Delete)
       - Platform Store -> Wallet (Read, Update)
+      - Platform Store -> Revocation (Update, Delete)
+      - Platform Store -> Order (Create)
+      - Platform Store -> Store (Read, Create, Update, Delete)
+      - Platform Store -> Category (Create)
+      - Platform Store -> Currency (Read, Create, Delete)
+      - Platform Store -> Item (Read, Create, Delete)
+      - IAM -> User (Create, Delete)      
 
    > :warning: **Oauth Client created in this step is different from the one from Prerequisites section:** It is required by CLI demo app [here](demo/cli/) in the next step to register the `gRPC Server` URL.
 

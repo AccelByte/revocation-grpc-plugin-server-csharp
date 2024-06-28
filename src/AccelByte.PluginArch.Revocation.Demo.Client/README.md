@@ -15,10 +15,11 @@ The following environment variables are used by this CLI demo app.
 export AB_BASE_URL='https://test.accelbyte.io'
 export AB_CLIENT_ID='xxxxxxxxxx'
 export AB_CLIENT_SECRET='xxxxxxxxxx'
-
 export AB_NAMESPACE='namespace'
-export AB_USERNAME='USERNAME'
-export AB_PASSWORD='PASSWORD'
+
+export GRPC_SERVER_URL='locally hosted grpc server'
+# OR
+export EXTEND_APP_NAME='extend app name'
 ```
 If these variables aren't provided, you'll need to supply the required values via command line arguments.
 
@@ -31,12 +32,12 @@ CLI demo app requires only the grpc server url as a parameter.
 
 - Without any environment variables
 ```bash
-dotnet run -- --baseurl https://test.accelbyte.io --client <CLIENT-ID-VALUE> --secret <CLIENT-SECRET-VALUE> --namespace <NAMESPACE-VALUE> --username <USERNAME> --password <PASSWORD> --grpc-target <GRPC_PLUGIN_SERVER_URL>
+dotnet run -- --baseurl https://test.accelbyte.io --client <CLIENT-ID-VALUE> --secret <CLIENT-SECRET-VALUE> --namespace <NAMESPACE-VALUE> --grpc-target <GRPC_PLUGIN_SERVER_URL>
 ```
 
 - With basic environment variables setup
 ```bash
-dotnet run -- --username <USERNAME> --password <PASSWORD> --namespace <NAMESPACE-VALUE> --grpc-target <GRPC_PLUGIN_SERVER_URL>
+dotnet run -- --namespace <NAMESPACE-VALUE> --grpc-target <GRPC_PLUGIN_SERVER_URL>
 ```
 
 - With all environment variables setup

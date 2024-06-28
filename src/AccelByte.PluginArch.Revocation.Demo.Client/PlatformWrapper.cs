@@ -44,7 +44,6 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
             _Config = config;
             _Sdk = AccelByteSDK.Builder
                 .SetConfigRepository(_Config)
-                .SetCredentialRepository(_Config)
                 .UseDefaultHttpClient()
                 .UseDefaultTokenRepository()
                 .Build();
@@ -90,7 +89,7 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
 
         public void DeleteGrpcTargetUrl()
         {
-            _Sdk.Platform.ServicePluginConfig.DeleteLootBoxPluginConfigOp
+            _Sdk.Platform.ServicePluginConfig.DeleteRevocationPluginConfigOp
                 .Execute(_Sdk.Namespace);
         }
 
@@ -598,14 +597,15 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
         {
             try
             {
-                OrderInfo? order = _Sdk.Platform.Order.PublicCreateUserOrderOp
-                    .SetBody(new OrderCreate()
+                OrderInfo? order = _Sdk.Platform.Order.AdminCreateUserOrderOp
+                    .SetBody(new AdminOrderCreate()
                     {
                         CurrencyCode = AB_CURRENCY_CODE,
                         ItemId = item.Id,
                         Price = quantity * item.Price,
                         Quantity = quantity,
-                        DiscountedPrice = quantity * item.Price
+                        DiscountedPrice = quantity * item.Price,
+                        Region = "US"
                     })
                     .Execute(_Sdk.Namespace, userId);
                 if (order == null)
@@ -655,17 +655,43 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
             }
         }
 
-        public ModelUserResponseV3 Login()
+        public void Login()
         {
-            bool loginResult = _Sdk.LoginUser();
+            bool loginResult = _Sdk.LoginClient();
             if (!loginResult)
                 throw new Exception("Login failed!");
+        }
 
-            ModelUserResponseV3? userInfo = _Sdk.Iam.Users.PublicGetMyUserV3Op.Execute();
-            if (userInfo == null)
-                throw new Exception("Could not retrieve login user info.");
+        public AccountCreateUserResponseV4 CreateTestUser()
+        {
+            string nameId = Helper.GenerateRandomId(8);
+            string userName = $"extend_{nameId}_user";
+            string dName = $"Extend Test User {nameId}";
 
-            return userInfo;
+            var newUser = _Sdk.Iam.UsersV4.PublicCreateTestUserV4Op
+                .Execute(new AccountCreateTestUserRequestV4()
+                {
+                    Verified = true,
+                    EmailAddress = $"{userName}@dummy.net",
+                    Username = userName,
+                    DisplayName = dName,
+                    UniqueDisplayName = dName,
+                    Country = "ID",
+                    AcceptedPolicies = new List<LegalAcceptedPoliciesRequest>(),
+                    AuthType = AccountCreateTestUserRequestV4AuthType.EMAILPASSWD,
+                    DateOfBirth = "1990-01-01",
+                    Password = Helper.GenerateRandomPassword(16)
+                }, _Sdk.Namespace);
+            if (newUser == null)
+                throw new Exception("Could not create user");
+
+            return newUser;
+        }
+
+        public void DeleteUser(string userId)
+        {
+            _Sdk.Iam.Users.AdminDeleteUserInformationV3Op
+                .Execute(_Sdk.Namespace, userId);
         }
 
         public void Logout()
@@ -720,12 +746,25 @@ namespace AccelByte.PluginArch.Revocation.Demo.Client
         {
             try
             {
-                var checkResult = _Sdk.Platform.Wallet.PublicGetWalletOp
-                    .Execute(AB_CURRENCY_CODE, _Sdk.Namespace, userId);
+                var checkResult = _Sdk.Platform.Wallet.QueryUserCurrencyWalletsOp
+                    .Execute(_Sdk.Namespace, userId);
                 if (checkResult == null)
-                    throw new Exception("Could not retrieve wallet info.");
+                    throw new Exception("Could not retrieve wallet summary.");
 
-                if (checkResult.Balance!.Value < 500)
+                CurrencyWallet? currencyWallet = null;
+                foreach (var wallet in checkResult)
+                {
+                    if (wallet.CurrencyCode! == AB_CURRENCY_CODE)
+                    {
+                        currencyWallet = wallet;
+                        break;
+                    }
+                }
+
+                if (currencyWallet == null)
+                    throw new Exception($"Wallet for {AB_CURRENCY_CODE} does not exists.");
+
+                if (currencyWallet.Balance!.Value < 500)
                 {
                     //not enough balance, so fill it.
                     var addResult = _Sdk.Platform.Wallet.CreditUserWalletOp
