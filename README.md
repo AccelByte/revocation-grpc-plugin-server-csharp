@@ -94,8 +94,8 @@ custom revocation function for platform service in `AccelByte Gaming Services`.
 
    a. Base URL
    
-      - For `Starter` tier e.g.  https://spaceshooter.prod.gamingservices.accelbyte.io
-      - For `Premium` tier e.g.  https://dev.accelbyte.io
+      - For `Shared Cloud` tier e.g.  https://spaceshooter.prod.gamingservices.accelbyte.io
+      - For `Private Cloud` tier e.g.  https://dev.accelbyte.io
       
    b. [Create a Game Namespace](https://docs.accelbyte.io/gaming-services/tutorials/how-to/create-a-game-namespace/) if you don't have one yet. Keep the `Namespace ID`.
 
@@ -259,7 +259,7 @@ the `gRPC server` needs to be exposed to the internet. To do this without requir
 
 4. [Create an OAuth Client](https://docs.accelbyte.io/guides/access/iam-client.html) with `confidential` client type with the following permissions.  Keep the `Client ID` and `Client Secret`. This is different from the Oauth Client from the Prerequisites section and it is required by CLI demo app [here](demo/cli/) in the next step to register the `gRPC Server` URL.
    
-   - For AGS Premium customers:
+   - For AGS Private Cloud customers:
       - `ADMIN:NAMESPACE:{namespace}:PLUGIN:REVOCATION [UPDATE,DELETE]`
       - `ADMIN:NAMESPACE:{namespace}:REVOCATION [UPDATE]`
       - `ADMIN:NAMESPACE:{namespace}:USER:*:REVOCATION [UPDATE]`
@@ -269,7 +269,7 @@ the `gRPC server` needs to be exposed to the internet. To do this without requir
       - `ADMIN:NAMESPACE:{namespace}:ITEM [CREATE,READ,DELETE]`
       - `ADMIN:NAMESPACE:{namespace}:USER:{userId}:WALLET [UPDATE]`
       - `NAMESPACE:{namespace}:WALLET [READ]`
-   - For AGS Starter customers:
+   - For AGS Shared Cloud customers:
       - Platform Store -> Revocation (Update, Delete)
       - Platform Store -> Service Plugin Config (Read, Update, Delete)
       - Platform Store -> Store (Create, Read, Update, Delete)
