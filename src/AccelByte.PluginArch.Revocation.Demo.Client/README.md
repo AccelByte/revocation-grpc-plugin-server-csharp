@@ -31,38 +31,38 @@ CLI demo app requires only the grpc server url as a parameter.
 
 - Without any environment variables
 ```bash
-$ dotnet run -- --baseurl https://test.accelbyte.io --client <CLIENT-ID-VALUE> --secret <CLIENT-SECRET-VALUE> --namespace <NAMESPACE-VALUE> --username <USERNAME> --password <PASSWORD> --grpc-target <GRPC_PLUGIN_SERVER_URL>
+dotnet run -- --baseurl https://test.accelbyte.io --client <CLIENT-ID-VALUE> --secret <CLIENT-SECRET-VALUE> --namespace <NAMESPACE-VALUE> --username <USERNAME> --password <PASSWORD> --grpc-target <GRPC_PLUGIN_SERVER_URL>
 ```
 
 - With basic environment variables setup
 ```bash
-$ dotnet run -- --username <USERNAME> --password <PASSWORD> --namespace <NAMESPACE-VALUE> --grpc-target <GRPC_PLUGIN_SERVER_URL>
+dotnet run -- --username <USERNAME> --password <PASSWORD> --namespace <NAMESPACE-VALUE> --grpc-target <GRPC_PLUGIN_SERVER_URL>
 ```
 
 - With all environment variables setup
 ```bash
-$ dotnet run -- --grpc-target <GRPC_PLUGIN_SERVER_URL>
+dotnet run -- --grpc-target <GRPC_PLUGIN_SERVER_URL>
 ```
 
 - With all environment variables setup and using extend app instead of grpc target
 ```bash
-$ dotnet run -- --extend-app <EXTEND_APP_NAME>
+dotnet run -- --extend-app <EXTEND_APP_NAME>
 ```
 
 - With all environment variables setup and use custom store category path (category path must be prefixed by `/`)
 ```bash
-$ dotnet run -- --category <CATEGORY_PATH> --grpc-target <GRPC_PLUGIN_SERVER_URL>
+dotnet run -- --category <CATEGORY_PATH> --grpc-target <GRPC_PLUGIN_SERVER_URL>
 ```
 
 - Show usage help
 ```bash
- $ dotnet run -- --help
+dotnet run -- --help
 ```
 
 ## Build
 
-To build this CLI sample app, execute the following command.
+To build this demo CLI app, execute the following command.
 
 ```bash
-$ dotnet build
+dotnet build
 ```
