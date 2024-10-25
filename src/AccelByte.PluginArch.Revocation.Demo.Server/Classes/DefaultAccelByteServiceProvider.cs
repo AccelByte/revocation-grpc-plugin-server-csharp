@@ -41,6 +41,8 @@ namespace AccelByte.PluginArch.Revocation.Demo.Server
                 .UseLocalTokenValidator()
                 .UseAutoRefreshForTokenRevocationList()
                 .Build();
+
+            Sdk.LoginClient(true);
         }
     }
 }
