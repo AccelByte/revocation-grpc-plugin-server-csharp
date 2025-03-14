@@ -5,8 +5,6 @@ VisualStudioVersion = 17.6.33717.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccelByte.PluginArch.Revocation.Demo.Server", "AccelByte.PluginArch.Revocation.Demo.Server\AccelByte.PluginArch.Revocation.Demo.Server.csproj", "{2DCB680A-10CD-4EDA-952D-076F767984B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccelByte.PluginArch.Revocation.Demo.Client", "AccelByte.PluginArch.Revocation.Demo.Client\AccelByte.PluginArch.Revocation.Demo.Client.csproj", "{D32360CD-09AC-4568-BE57-727D96EC90C0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccelByte.PluginArch.Revocation.Demo.Tests", "AccelByte.PluginArch.Revocation.Demo.Tests\AccelByte.PluginArch.Revocation.Demo.Tests.csproj", "{06771752-8B82-424F-85A7-98A184AC52AA}"
 EndProject
 Global
